@@ -1121,7 +1121,7 @@ small {
   .tasks-header {
     flex-wrap: wrap;
   }
-  /* <--- TAMBAHAN BARU DI SINI ---> */
+  
   .task-add-form,
   .timer-presets,
   .priority-fieldset,
@@ -1135,5 +1135,32 @@ small {
   .btn {
     max-width: 100%;
     box-sizing: border-box;
+  }
+}
+
+@media (max-width: 767px) {
+  .app-header,
+  .widget-card,
+  .dashboard-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .task-add-form,
+  .timer-presets,
+  .timer-custom,
+  .greeting-form,
+  .header-actions {
+    flex-wrap: wrap !important;
+    max-width: 100% !important;
+  }
+
+  .input, 
+  input[type="text"], 
+  input[type="number"] {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
