@@ -1121,4 +1121,19 @@ small {
   .tasks-header {
     flex-wrap: wrap;
   }
+  /* <--- TAMBAHAN BARU DI SINI ---> */
+  .task-add-form,
+  .timer-presets,
+  .priority-fieldset,
+  .export-import-wrapper {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .widget-card,
+  .input,
+  .btn {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
