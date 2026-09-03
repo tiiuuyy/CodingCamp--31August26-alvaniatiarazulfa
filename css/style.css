@@ -870,7 +870,9 @@ small {
 }
 
 .input[type="number"] {
-  -moz-appearance: textfield;
+  -webkit-appearance: none; /* Dukungan browser berbasis WebKit (Safari/Chrome lama) */
+  -moz-appearance: textfield; /* Dukungan Firefox */
+  appearance: textfield; /* Standar CSS Modern */
 }
 
 .select {
