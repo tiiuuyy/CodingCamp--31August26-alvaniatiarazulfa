@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Life Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-theme="light" data-time-theme="day">
+
+  <!-- ========== HEADER ========== -->
+  <header class="app-header" role="banner">
+    <div class="header-brand">
+      <span class="header-title">Life Dashboard</span>
+    </div>
+
+    <div class="header-actions">
+      <!-- Export / Import -->
+      <div class="export-import-wrapper" role="group" aria-label="Ekspor dan Impor Data">
+        <button
+          id="btn-export"
+          class="btn btn--icon-text"
+          type="button"
+          aria-label="Ekspor semua data ke file JSON"
+          title="Ekspor Data"
+        >
+          <span aria-hidden="true">⬇️</span>
+          <span class="btn-label">Ekspor</span>
+        </button>
+
+        <label class="btn btn--icon-text" for="input-import" title="Impor Data" style="cursor:pointer;">
+          <span aria-hidden="true">⬆️</span>
+          <span class="btn-label">Impor</span>
+        </label>
+        <input
+          id="input-import"
+          type="file"
+          accept=".json"
+          aria-label="Pilih file JSON untuk diimpor"
+          class="visually-hidden"
+        />
+      </div>
+
+      <!-- Theme Toggle -->
+      <button
+        id="btn-theme-toggle"
+        class="btn btn--icon theme-toggle"
+        type="button"
+        aria-label="Beralih ke mode gelap"
+        aria-pressed="false"
+        title="Ganti tema"
+      >
+        <span class="icon-light" aria-hidden="true">☀️</span>
+        <span class="icon-dark"  aria-hidden="true">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========== MAIN GRID ========== -->
+  <main id="app" class="dashboard-grid" role="main">
+
+    <!-- Greeting Widget -->
+    <section
+      class="widget widget-greeting"
+      aria-label="Sapaan dan Jam"
+    >
+      <!-- Clock -->
+      <div class="greeting-clock" aria-live="polite" aria-atomic="true">
+        <time id="clock-time" class="clock-time" aria-label="Jam saat ini">00:00:00</time>
+        <p   id="clock-date" class="clock-date"  aria-label="Tanggal hari ini">Memuat...</p>
+      </div>
+
+      <!-- Greeting + Name -->
+      <div class="greeting-message" aria-live="polite">
+        <p id="greeting-text" class="greeting-text">Selamat datang 👋</p>
+      </div>
+
+      <!-- Name display / edit -->
+      <div class="greeting-name-wrapper">
+        <div id="greeting-name-display" class="greeting-name-display" hidden>
+          <span id="greeting-name-text" class="greeting-name-text"></span>
+          <button
+            id="btn-edit-name"
+            class="btn btn--icon"
+            type="button"
+            aria-label="Edit nama pengguna"
+            title="Edit nama"
+          >✏️</button>
+        </div>
+
+        <form id="greeting-name-form" class="greeting-name-form" aria-label="Masukkan nama Anda" novalidate>
+          <input
+            id="input-name"
+            type="text"
+            class="input input--name"
+            placeholder="Siapa namamu?"
+            maxlength="50"
+            autocomplete="off"
+            aria-label="Nama pengguna"
+            aria-describedby="name-hint"
+          />
+          <span id="name-hint" class="input-hint visually-hidden">Maksimum 50 karakter</span>
+          <button type="submit" class="btn btn--primary" aria-label="Simpan nama">Simpan</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Timer Widget -->
+    <section
+      class="widget widget-timer"
+      aria-label="Focus Timer Pomodoro"
+    >
+      <h2 class="widget-title">Focus Timer</h2>
+
+      <!-- Countdown display -->
+      <div class="timer-display" role="timer" aria-live="off" aria-atomic="true">
+        <span id="timer-countdown" class="timer-countdown" aria-label="Sisa waktu">25:00</span>
+        <span id="timer-mode-label" class="timer-mode-label" aria-live="polite">Fokus</span>
+      </div>
+
+      <!-- Controls -->
+      <div class="timer-controls" role="group" aria-label="Kontrol timer">
+        <button id="btn-timer-start" class="btn btn--primary" type="button" aria-label="Mulai timer">
+          ▶ Mulai
+        </button>
+        <button id="btn-timer-stop"  class="btn btn--secondary" type="button" aria-label="Hentikan timer" disabled>
+          ⏸ Stop
+        </button>
+        <button id="btn-timer-reset" class="btn btn--secondary" type="button" aria-label="Reset timer">
+          ↺ Reset
+        </button>
+      </div>
+
+      <!-- Duration presets -->
+      <div class="timer-presets" role="group" aria-label="Pilihan durasi preset">
+        <span class="presets-label">Durasi:</span>
+        <button class="btn btn--preset" type="button" data-minutes="15" aria-label="Set 15 menit">15m</button>
+        <button class="btn btn--preset" type="button" data-minutes="25" aria-label="Set 25 menit" aria-pressed="true">25m</button>
+        <button class="btn btn--preset" type="button" data-minutes="45" aria-label="Set 45 menit">45m</button>
+        <button class="btn btn--preset" type="button" data-minutes="60" aria-label="Set 60 menit">60m</button>
+      </div>
+
+      <!-- Custom duration input -->
+      <form id="timer-custom-form" class="timer-custom-form" aria-label="Durasi kustom" novalidate>
+        <label for="input-custom-duration" class="sr-only">Durasi kustom (menit)</label>
+        <input
+          id="input-custom-duration"
+          type="number"
+          class="input input--duration"
+          placeholder="1–180 menit"
+          min="1"
+          max="180"
+          aria-label="Masukkan durasi kustom dalam menit"
+          aria-describedby="duration-error"
+        />
+        <button type="submit" class="btn btn--secondary" aria-label="Terapkan durasi kustom">Set</button>
+        <span id="duration-error" class="input-error" role="alert" aria-live="polite" hidden></span>
+      </form>
+    </section>
+
+    <!-- Quick Links Widget -->
+    <section
+      class="widget widget-quick-links"
+      aria-label="Tautan Cepat"
+    >
+      <h2 class="widget-title">Tautan Cepat</h2>
+
+      <!-- Links list -->
+      <ul id="quick-links-list" class="quick-links-list" aria-label="Daftar tautan tersimpan">
+        <!-- Populated by QuickLinksModule -->
+      </ul>
+
+      <!-- Add link form -->
+      <form id="quick-links-form" class="quick-links-form" aria-label="Tambah tautan baru" novalidate>
+        <input
+          id="input-link-label"
+          type="text"
+          class="input"
+          placeholder="Label (contoh: GitHub)"
+          maxlength="50"
+          aria-label="Label tautan"
+          required
+        />
+        <input
+          id="input-link-url"
+          type="url"
+          class="input"
+          placeholder="https://..."
+          aria-label="URL tautan (harus diawali http:// atau https://)"
+          aria-describedby="link-url-error"
+          required
+        />
+        <span id="link-url-error" class="input-error" role="alert" aria-live="polite" hidden></span>
+        <button type="submit" class="btn btn--primary" aria-label="Tambah tautan baru">+ Tambah</button>
+      </form>
+    </section>
+
+    <!-- Tasks Widget -->
+    <section
+      class="widget widget-tasks"
+      aria-label="Manajemen Task"
+    >
+      <!-- Tasks header: title + stats + sort -->
+      <div class="tasks-header">
+        <h2 class="widget-title">Task Hari Ini</h2>
+
+        <!-- Progress stats -->
+        <div class="tasks-stats" aria-label="Statistik task" aria-live="polite" aria-atomic="true">
+          <div class="stats-ring-wrapper" aria-hidden="true">
+            <svg class="progress-ring" viewBox="0 0 36 36" width="48" height="48" aria-hidden="true">
+              <circle
+                class="progress-ring__bg"
+                cx="18" cy="18" r="15.9"
+                fill="none"
+                stroke-width="3"
+              />
+              <circle
+                id="progress-ring-fill"
+                class="progress-ring__fill"
+                cx="18" cy="18" r="15.9"
+                fill="none"
+                stroke-width="3"
+                stroke-dasharray="0 100"
+                stroke-linecap="round"
+                transform="rotate(-90 18 18)"
+              />
+            </svg>
+            <span id="stats-percent" class="stats-percent" aria-hidden="true">0%</span>
+          </div>
+          <div class="stats-text">
+            <span id="stats-incomplete" class="stats-incomplete">0</span>
+            <span class="stats-label"> task belum selesai</span>
+          </div>
+        </div>
+
+        <!-- Sort dropdown -->
+        <div class="tasks-sort-wrapper">
+          <label for="select-sort" class="sr-only">Urutkan task</label>
+          <select
+            id="select-sort"
+            class="select select--sort"
+            aria-label="Pilih urutan tampilan task"
+          >
+            <option value="oldest"  selected>Terlama</option>
+            <option value="newest">Terbaru</option>
+            <option value="status">Status</option>
+            <option value="az">A–Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Add task form -->
+      <form id="task-add-form" class="task-add-form" aria-label="Tambah task baru" novalidate>
+        <input
+          id="input-task"
+          type="text"
+          class="input input--task"
+          placeholder="Tambah task baru... (tekan N untuk fokus)"
+          maxlength="200"
+          autocomplete="off"
+          aria-label="Teks task baru"
+          aria-describedby="task-input-error"
+        />
+
+        <!-- Priority selector -->
+        <fieldset class="priority-fieldset" aria-label="Pilih prioritas task">
+          <legend class="sr-only">Prioritas</legend>
+          <label class="priority-option priority-option--low">
+            <input type="radio" name="task-priority" value="low"    aria-label="Prioritas rendah" />
+            <span class="priority-badge priority-badge--low">Low</span>
+          </label>
+          <label class="priority-option priority-option--medium">
+            <input type="radio" name="task-priority" value="medium" aria-label="Prioritas sedang" checked />
+            <span class="priority-badge priority-badge--medium">Medium</span>
+          </label>
+          <label class="priority-option priority-option--high">
+            <input type="radio" name="task-priority" value="high"   aria-label="Prioritas tinggi" />
+            <span class="priority-badge priority-badge--high">High</span>
+          </label>
+        </fieldset>
+
+        <span id="task-input-error" class="input-error" role="alert" aria-live="polite" hidden></span>
+        <button type="submit" class="btn btn--primary" aria-label="Simpan task baru">Tambah</button>
+      </form>
+
+      <!-- Task list -->
+      <ul
+        id="task-list"
+        class="task-list"
+        aria-label="Daftar task"
+        aria-live="polite"
+      >
+        <!-- Populated by TaskModule -->
+      </ul>
+    </section>
+
+    <!-- Sidebar Widget (Habit + Quote) -->
+    <section
+      class="widget widget-sidebar"
+      aria-label="Sidebar"
+    >
+
+      <!-- Habit / Mood Widget -->
+      <div class="widget widget-habit" aria-label="Mood Harian">
+        <h2 class="widget-title">Mood Hari Ini</h2>
+        <div
+          id="mood-picker"
+          class="mood-picker"
+          role="group"
+          aria-label="Pilih mood hari ini"
+        >
+          <button
+            class="mood-btn"
+            type="button"
+            data-mood="happy"
+            aria-label="Senang"
+            aria-pressed="false"
+            title="Senang"
+          >😄</button>
+          <button
+            class="mood-btn"
+            type="button"
+            data-mood="neutral"
+            aria-label="Biasa"
+            aria-pressed="false"
+            title="Biasa"
+          >😐</button>
+          <button
+            class="mood-btn"
+            type="button"
+            data-mood="sad"
+            aria-label="Sedih"
+            aria-pressed="false"
+            title="Sedih"
+          >😔</button>
+          <button
+            class="mood-btn"
+            type="button"
+            data-mood="frustrated"
+            aria-label="Frustrasi"
+            aria-pressed="false"
+            title="Frustrasi"
+          >😤</button>
+        </div>
+      </div>
+
+      <!-- Quote Widget -->
+      <div class="widget widget-quote" aria-label="Kutipan Harian">
+        <h2 class="widget-title">Kutipan Hari Ini</h2>
+        <figure class="quote-figure">
+          <blockquote id="quote-text" class="quote-text">
+            <p>Memuat kutipan...</p>
+          </blockquote>
+          <figcaption id="quote-author" class="quote-author">— Anonim</figcaption>
+        </figure>
+      </div>
+
+    </section><!-- /widget-sidebar -->
+
+  </main><!-- /dashboard-grid -->
+
+  <!-- ========== TOAST CONTAINER ========== -->
+  <div
+    id="toast-container"
+    class="toast-container"
+    role="region"
+    aria-label="Notifikasi"
+    aria-live="polite"
+    aria-atomic="false"
+  ></div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
