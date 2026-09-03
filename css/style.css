@@ -1163,4 +1163,29 @@ small {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+  /* Buat form tambah task jadi bertumpuk (atas-bawah) */
+  .task-add-form {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+
+  /* Buat input text-nya full width */
+  .task-add-form input[type="text"],
+  .task-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Pilihan prioritas & tombol Tambah dibuat rapi di bawahnya */
+  .priority-fieldset {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .task-add-form .btn,
+  .btn-primary {
+    width: 100% !important;
+  }
 }
